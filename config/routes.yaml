@@ -2,6 +2,18 @@
 #    path: /
 #    defaults: { _controller: 'App\Controller\DefaultController::index' }
 
+app_base:
+    path: /
+    controller: App\Controller\CodevateController::index
+
 app_lucky_number:
     path: /lucky/number
     controller: App\Controller\LuckyController::number
+
+codevate_base:
+    path: /codevate
+    controller: App\Controller\CodevateController::hi_codevate
+
+codevate_form:
+    path: /codevate/sms
+    controller: App\Controller\CodevateController::sms_form
