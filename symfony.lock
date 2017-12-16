@@ -11,6 +11,9 @@
     "psr/simple-cache": {
         "version": "1.0.0"
     },
+    "squizlabs/php_codesniffer": {
+        "version": "3.2.0"
+    },
     "symfony/asset": {
         "version": "v4.0.2"
     },
