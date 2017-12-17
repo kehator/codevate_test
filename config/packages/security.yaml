@@ -34,11 +34,10 @@ security:
             form_login: 
                 login_path: app_login
                 check_path: app_login
-                # default_target_path:            /
-                # always_use_default_target_path: false
-                # default_target_path: \codevate
-                # target_path_parameter:          _target_path
-                # use_referer:                    false
+
+            logout:
+                path:   app_logout
+                target: /
 
     access_control:        
         # require ROLE_ADMIN for /admin*

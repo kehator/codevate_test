@@ -44,6 +44,10 @@ class CodevateController extends Controller
      */
     public function sms_form(Request $request)
     {
+        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // $user = $this->getUser();
+        // $firstname = $user->getFirstName();
+
         $sms_fields = new SMS();
         $sms_fields->setNumber(null);
         $sms_fields->setMessage(null);

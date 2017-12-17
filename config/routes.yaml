@@ -8,7 +8,10 @@ app_base:
 
 app_login:
     path: /login/
-    controller: App\Controller\SecurityController::login    
+    controller: App\Controller\SecurityController::login
+
+app_logout:
+    path: /logout/
 
 app_admin:
     path: /admin/
