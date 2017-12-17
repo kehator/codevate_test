@@ -1,5 +1,5 @@
 <?php
-namespace App\Entity;
+namespace App\Form;
 
 class SMS
 {

@@ -6,14 +6,22 @@ app_base:
     path: /
     controller: App\Controller\CodevateController::index
 
+app_login:
+    path: /login/
+    controller: App\Controller\SecurityController::login    
+
+app_admin:
+    path: /admin/
+    controller: App\Controller\DefaultController::admin
+
 app_lucky_number:
-    path: /lucky/number
+    path: /lucky/number/
     controller: App\Controller\LuckyController::number
 
 codevate_base:
-    path: /codevate
+    path: /codevate/
     controller: App\Controller\CodevateController::hi_codevate
 
 codevate_form:
-    path: /codevate/sms
+    path: /codevate/sms/
     controller: App\Controller\CodevateController::sms_form

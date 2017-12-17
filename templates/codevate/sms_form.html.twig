@@ -1,3 +1,6 @@
+{% if is_granted('ROLE_USER') %}
+
+
 {{ test }}
 
 <br>
@@ -5,3 +8,10 @@
 {{ form_start(form) }}
 {{ form_widget(form) }}
 {{ form_end(form) }}
+
+{% else %}
+<p>
+Please Login first: <br>
+<a href="/login/">Login</a>
+</p>
+{% endif %}

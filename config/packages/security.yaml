@@ -1,0 +1,50 @@
+security:
+    access_denied_url:    ~ # Example: /foo/error403
+    session_fixation_strategy:  migrate
+    hide_user_not_found:  true
+    always_authenticate_before_granting:  false
+    erase_credentials:    true
+
+    # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        in_memory: { memory: ~ }
+        our_db_provider:
+            entity:
+                class: App\Entity\User
+                # property: username
+                # if you're using multiple entity managers
+                # manager_name: customer
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+            
+        main:
+            # activate different ways to authenticate
+            anonymous: ~
+
+            # https://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+            http_basic: ~
+            
+            pattern:    ^/
+            provider: our_db_provider
+
+            # https://symfony.com/doc/current/cookbook/security/form_login_setup.html
+            form_login: 
+                login_path: app_login
+                check_path: app_login
+                # default_target_path:            /
+                # always_use_default_target_path: false
+                # default_target_path: \codevate
+                # target_path_parameter:          _target_path
+                # use_referer:                    false
+
+    access_control:        
+        # require ROLE_ADMIN for /admin*
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
