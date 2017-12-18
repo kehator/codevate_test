@@ -2,7 +2,15 @@
 <html>
     <link>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>
+            {% block title %}
+                {% if is_granted('ROLE_USER') %}
+                Welcome back, {{ app.user.username }}!
+                {% else %}
+                Welcome!
+                {% endif %}
+            {% endblock %}
+        </title>        
         {% block stylesheets %}
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" />
         {% endblock %}
@@ -11,7 +19,7 @@
         <div class="container">
             {{ include('menu.html.twig') }}
             
-            <div id="content">
+            <div id="content" class="pt-4">
             {% block content %}
                 {% if is_granted('ROLE_USER') %}
                 <div class="hello">

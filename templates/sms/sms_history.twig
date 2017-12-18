@@ -1,0 +1,57 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+SMS History
+{% endblock %}
+
+{% block content %}
+
+    {% if is_granted('ROLE_USER') %}
+
+        {% if (app.user.username == username) %}
+        <div class="message">Your SMS history:</div>
+        {% else %}
+        <div class="message">{{ username }}'s SMS history:</div>
+        {% endif %}
+        
+        <br>
+
+        <div class="row">
+
+        {% for message in messages %}
+
+            <div class="pb-4 col-4">
+                <div class="card text-center">
+                    <div class="card-header sms-number">
+                        {{ message.number }}
+                    </div>
+                    <div class="card-body sms-message">
+                        {{ message.message }}
+                    </div>
+                    <div class="card-footer text-muted sms-time">                        
+                        <div class="sms-datetime">
+                            {{ message.created|date('d M Y H:m:s') }} {# 18 Dec 2017 21:01:29 #}
+                        </div>
+                        <div class="sms-status">
+                            Status: {{ message.status }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+        <div class="action">
+            <div class="message">Please Login first:<div>
+            <a href="{{ path('app_login') }}">Login</a>
+        </div>
+        
+    {% endif %}
+   
+{% endblock %}
+

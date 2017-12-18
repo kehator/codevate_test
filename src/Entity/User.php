@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity
@@ -53,21 +55,39 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $isActive;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SMS", mappedBy="user")
+     * @ORM\OrderBy({"created" = "DESC"})
+     */
+    private $messages;
+
+    
+
     public function __construct()
     {
         $this->isActive = true;
+        $this->messages = new ArrayCollection();
         // may not be needed, see section on salt below
         // $this->salt = md5(uniqid('', true));
     }
+
+
+    public function getID()
+    {
+        return $this->id;
+    }
+
 
     public function getUsername()
     {
         return $this->username;
     }
+
     public function setUsername($username)
     {
         $this->username = $username;
     }
+
 
     public function getSalt()
     {
@@ -76,23 +96,28 @@ class User implements AdvancedUserInterface, \Serializable
         return null;
     }
 
+
     public function getPassword()
     {
         return $this->password;
     }
+
     public function setPassword($password)
     {
         $this->password = $password;
     }
+
 
     public function getRoles()
     {
         return array('ROLE_USER');
     }
 
+
     public function eraseCredentials()
     {
     }
+
 
     /** @see \Serializable::serialize() */
     public function serialize()
@@ -105,6 +130,7 @@ class User implements AdvancedUserInterface, \Serializable
             // $this->salt,
         ));
     }
+
 
     /** @see \Serializable::unserialize() */
     public function unserialize($serialized)
@@ -129,6 +155,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->email = $email;
     }
 
+
     public function getPlainPassword()
     {
         return $this->plainPassword;
@@ -139,23 +166,35 @@ class User implements AdvancedUserInterface, \Serializable
         $this->plainPassword = $password;
     }
 
+
     public function isAccountNonExpired()
     {
         return true;
     }
+
 
     public function isAccountNonLocked()
     {
         return true;
     }
 
+
     public function isCredentialsNonExpired()
     {
         return true;
     }
 
+
     public function isEnabled()
     {
         return $this->isActive;
+    }
+
+    /**
+     * @return Collection|SMS[]
+     */
+    public function getMessages()
+    {
+        return $this->messages;
     }
 }

@@ -1,4 +1,8 @@
 {% extends "base.html.twig" %}
 {% block content %}
-    This is an SMS Homepage
+    This is an SMS Homepage <br><br>
+
+    Would you like to send an <a href="{{ path('sms_form') }}">SMS</a>? <br>
+    
+    Or maybe you want to check your <a href="{{ path('sms_history') }}">SMS history</a>?
 {% endblock %}

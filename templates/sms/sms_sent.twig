@@ -1,17 +1,18 @@
 {% extends "base.html.twig" %}
 
 {% block title %}
-Send SMS
+SMS Sent!
 {% endblock %}
 
 {% block content %}
 
-    {% if is_granted('ROLE_USER') %}
+    {% if is_granted('ROLE_USER') %}       
 
-        <div class="sms-form">
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            {{ form_end(form) }}
+        <div class="message">{{ sms_sent_message }}</div>
+
+        <div class="action">
+            <div class="message">Return to my account:<div>
+            <a href="{{ path('sms_base') }}"><- Back</a>
         </div>
 
     {% else %}
@@ -20,7 +21,7 @@ Send SMS
             <div class="message">Please Login first:<div>
             <a href="{{ path('app_login') }}">Login</a>
         </div>
-        
+
     {% endif %}
    
 {% endblock %}

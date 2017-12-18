@@ -23,11 +23,15 @@ app_lucky_number:
 
 sms_base:
     path: /sms/
-    controller: App\Controller\SMSController::say_hi
+    controller: App\Controller\SMSController::account
 
 sms_form:
     path: /sms/form/
     controller: App\Controller\SMSController::sms_form
+
+sms_history:
+    path: /sms/history/
+    controller: App\Controller\SMSController::sms_history    
 
 app_error_403:
     path: /access_denied/error403
