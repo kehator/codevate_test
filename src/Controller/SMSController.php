@@ -14,26 +14,16 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
 
-class CodevateController extends Controller
+class SMSController extends Controller
 {
     /**
-     * Function index to return homepage view
+     * Function index to return 'say_hi' view
      *
      * @return void
      */
-    public function index()
+    public function say_hi()
     {
-        return $this->render('base.html.twig');
-    }
-
-    /**
-     * Function index to return 'hi_codevate' view
-     *
-     * @return void
-     */
-    public function hi_codevate()
-    {
-        return $this->render('codevate/hi_codevate.html.twig');
+        return $this->render('sms/app.twig');
     }
 
     /**
@@ -82,7 +72,7 @@ class CodevateController extends Controller
             $test = 'form submited !';
         }
 
-        return $this->render('codevate/sms_form.html.twig', array(
+        return $this->render('sms/sms_form.twig', array(
             'form' => $form->createView(),
             'test'  =>  $test,
         ));

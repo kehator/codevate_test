@@ -1,9 +1,9 @@
 security:
-    access_denied_url:    ~ # Example: /foo/error403
-    session_fixation_strategy:  migrate
-    hide_user_not_found:  true
-    always_authenticate_before_granting:  false
-    erase_credentials:    true
+    access_denied_url: app_error_403
+    session_fixation_strategy: migrate
+    hide_user_not_found: true
+    always_authenticate_before_granting: false
+    erase_credentials: true
 
     # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
@@ -18,7 +18,6 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
             
         main:
             # activate different ways to authenticate
@@ -27,7 +26,7 @@ security:
             # https://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
             http_basic: ~
             
-            pattern:    ^/
+            pattern: ^/
             provider: our_db_provider
 
             # https://symfony.com/doc/current/cookbook/security/form_login_setup.html
@@ -36,11 +35,10 @@ security:
                 check_path: app_login
 
             logout:
-                path:   app_logout
+                path: app_logout
                 target: /
 
     access_control:        
-        # require ROLE_ADMIN for /admin*
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 

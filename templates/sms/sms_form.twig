@@ -1,0 +1,28 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+Send SMS
+{% endblock %}
+
+{% block content %}
+
+    {% if is_granted('ROLE_USER') %}
+        <p>Username: {{ app.user.username }}</p>
+
+        {{ test }}
+
+        <div class="sms-form">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+
+    {% else %}
+        <div class="action">
+            <div class="message"></div>Please Login first:</div>div>
+            <a href="{{ path('app_login') }}">Login</a>
+        </div>
+    {% endif %}
+   
+{% endblock %}
+

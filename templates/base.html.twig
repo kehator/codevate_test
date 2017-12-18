@@ -1,15 +1,43 @@
 <!DOCTYPE html>
 <html>
-    <head>
+    <link>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" />
+        {% endblock %}
     </head>
     <body>
-        {% block body %}
-        Hello There
-        {% endblock %}
+        <div class="container">
+            {{ include('menu.html.twig') }}
+            
+            <div id="content">
+            {% block content %}
+                {% if is_granted('ROLE_USER') %}
+                <div class="hello">
+                    Hello {{ app.user.username }}! Nice to see you again.
+                </div>
+                <div class="action">
+                    <div class="message">You can now go to your account:</div>
+                    <a href="{{ path('sms_base') }}">My Account</a>
+                </div>
+                {% else %}
+                <div class="action">
+                    <div class="message">Hello There, please login:</div>
+                    <a href="{{ path('app_login') }}">Login</a>
+                </div>
+                {% endif %}
+            {% endblock %}
+            </div>
 
-        {% block javascripts %}{% endblock %}
+            <div id="footer">
+            {% block footer %}
+                {% block javascripts %}
+                    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+                    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.min.js"></script>
+                {% endblock %}
+            {% endblock %}
+            </div>
+        </div>
     </body>
 </html>

@@ -4,6 +4,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
+    /**
+     * Function index to return homepage view
+     *
+     * @return void
+     */
+    public function index()
+    {
+        return $this->render('base.html.twig');
+    }
     
     /**
      * Function admin redirect to admin page
@@ -12,7 +21,7 @@ class DefaultController extends Controller
      */
     public function admin()
     {
-        return $this->render('codevate/admin.html.twig', array(
+        return $this->render('admin.twig', array(
             'form' => $form->createView(),
             'test'  =>  $test,
         ));

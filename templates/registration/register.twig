@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+{% if is_granted('ROLE_USER') %}
+    <div class="already-user">
+        <div class="message">
+            You are already a registered user. <br>
+
+            You can go to your <a href="{{ path('sms_base') }}">account page</a> or <a href="{{ path('app_logout') }}">logout</a>.            
+        </div>
+    </div>
+{% else %}
+    <div id="register-form">
+        {{ form_start(form) }}
+            {{ form_row(form.username) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.plainPassword.first) }}
+            {{ form_row(form.plainPassword.second) }}
+
+            <button type="submit">Register!</button>
+        {{ form_end(form) }}
+    </div>
+{% endif %}
+{% endblock %}

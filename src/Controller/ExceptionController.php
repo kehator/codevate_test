@@ -14,6 +14,18 @@ class ExceptionController extends Controller
     {
         // showAction();
         // findTemplate();
-        return $this->render('Exception/error404.html.twig');
+        return $this->render('Exception/error404.twig');
+    }
+
+    /**
+     * Function showException403 redirect to the error403 page
+     *
+     * @return void
+     */
+    public function showException403()
+    {
+        // showAction();
+        // findTemplate();
+        return $this->render('Exception/error403.twig');
     }
 }

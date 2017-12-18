@@ -4,7 +4,7 @@
 
 app_base:
     path: /
-    controller: App\Controller\CodevateController::index
+    controller: App\Controller\DefaultController::index
 
 app_login:
     path: /login/
@@ -21,10 +21,14 @@ app_lucky_number:
     path: /lucky/number/
     controller: App\Controller\LuckyController::number
 
-codevate_base:
-    path: /codevate/
-    controller: App\Controller\CodevateController::hi_codevate
+sms_base:
+    path: /sms/
+    controller: App\Controller\SMSController::say_hi
 
-codevate_form:
-    path: /codevate/sms/
-    controller: App\Controller\CodevateController::sms_form
+sms_form:
+    path: /sms/form/
+    controller: App\Controller\SMSController::sms_form
+
+app_error_403:
+    path: /access_denied/error403
+    controller: App\Controller\ExceptionController::showException403
