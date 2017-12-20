@@ -21,9 +21,6 @@ class DefaultController extends Controller
      */
     public function admin()
     {
-        return $this->render('admin.twig', array(
-            'form' => $form->createView(),
-            'test'  =>  $test,
-        ));
+        return $this->render('admin.twig');
     }
 }

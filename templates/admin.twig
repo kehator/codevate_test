@@ -1,4 +1,8 @@
-{% extends "base.html" %}
+{% extends "base.html.twig" %}
 {% block content %}
+    {% if is_granted('ROLE_ADMIN') %}
     This is an Admin Page
+    {% else %}
+    You have no admin rights, you can't see this page.
+    {% endif %}
 {% endblock %}

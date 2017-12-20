@@ -27,11 +27,11 @@ sms_base:
 
 sms_form:
     path: /sms/form/
-    controller: App\Controller\SMSController::sms_form
+    controller: App\Controller\SMSController::smsForm
 
 sms_history:
     path: /sms/history/
-    controller: App\Controller\SMSController::sms_history    
+    controller: App\Controller\SMSController::smsHistory    
 
 app_error_403:
     path: /access_denied/error403
