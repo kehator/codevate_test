@@ -15,10 +15,30 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 
 class SMSController extends Controller
 {
+    public function __construct()
+    {
+        $this->redis = RedisAdapter::createConnection(
+            'redis://localhost:6379',
+            array(
+                'persistent' => 0,
+                'persistent_id' => null,
+                'timeout' => 30,
+                'read_timeout' => 0,
+                'retry_interval' => 0,
+            )
+        );
+
+        $this->cache = new RedisAdapter(
+            $this->redis,
+            $namespace = '',
+            $defaultLifetime = 3600
+        );
+    }
     /**
      * Function index to return 'account' view
      *
@@ -27,6 +47,7 @@ class SMSController extends Controller
     public function account()
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('sms/app.twig');
     }
 
@@ -54,7 +75,14 @@ class SMSController extends Controller
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
-        $user_id = $user->getID();
+        $user_id = $user->getID();        
+        $sms_timelimit_message = null;
+        
+        // check if timelimit reached and add message if so (if message exist, it will prevent user from sending an sms)
+        $timelimit = $this->redis->get('sms_time_limit_reached_user_'.$user_id);
+        if ($timelimit) {
+            $sms_timelimit_message = 'Please wait 15sec before sending next SMS.';
+        }
 
         $sms_fields = new SMS();
         $sms_fields->setNumber(null);
@@ -88,7 +116,9 @@ class SMSController extends Controller
                         ->add('save', SubmitType::class, array(
                                 'label' => 'Send SMS', 
                                 'attr'  =>  array(
-                                    'class' =>  'btn btn-secondary mt-3',
+                                    'class' =>  'btn btn-secondary mt-3',            // return $this->render('sms/sms_form.twig', array(
+                                        //     'sms_timelimit_message' => $sms_timelimit_message,
+                                        // ));
                                     'type'  =>  'submit',
                                 ),
                         ))
@@ -99,12 +129,14 @@ class SMSController extends Controller
 
         $SMS = $form->getData();
 
+        // check if form is submitted and valid, and send sms if so.
         if ($form->isSubmitted() && $form->isValid()) {  
             return $this->sendSMS($SMS);
         }
 
         return $this->render('sms/sms_form.twig', array(
             'form' => $form->createView(),
+            'sms_timelimit_message' => $sms_timelimit_message,
         ));
     }
 
@@ -140,6 +172,8 @@ class SMSController extends Controller
     protected function sendSMS($SMS)
     {
         $user = $this->getUser();
+        $user_id = $user->getID();
+        $timelimit_key = 'sms_time_limit_reached_user_'.$user_id;
 
         $sms_sent_message = 'You have sent the SMS to number: '. $SMS->getNumber();
         $sms_fail_message = 'Failed. Unfortunately you haven\'t sent the SMS to number: '. $SMS->getNumber();
@@ -163,6 +197,9 @@ class SMSController extends Controller
 
         $SMS->setStatus('sent');
         $save = $this->save($SMS);
+
+        $this->redis->set($timelimit_key, 'please wait 15sec');
+        $this->redis->expireat($timelimit_key, time() + 15);
 
         return $this->render('sms/sms_sent.twig', array(
             'sms_sent_message'  =>  $sms_sent_message,
